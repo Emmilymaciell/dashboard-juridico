@@ -186,6 +186,13 @@ Apache ECharts 5 · TanStack Query · Vitest.
 | `docs/PRODUCT_SPEC.md` · `docs/UI_UX.md` · `docs/VISUAL_REDESIGN.md` | produto e design |
 | `docs/README-original-sanitizado.md` | README original (endpoints, rotas, princípios) |
 
+## Verificação, sanitização e licença
+
+- **Testes:** `py -3.12 -m pytest tests -q -p no:cacheprovider` → **149 passed, 1 skipped** (o teste pulado depende de dado real) e Vitest do frontend → **120 passed**, em 19/11/2026.
+- **Dados:** fictícios — cópia sanitizada de um sistema em uso real; nenhum dado de cliente ou de terceiro.
+- **Sanitização:** o que foi removido, trocado ou inventado nesta cópia está em [`SANITIZACAO.md`](SANITIZACAO.md).
+- **Licença:** todos os direitos reservados; leitura permitida para avaliação de portfólio — ver [`LICENSE`](LICENSE) e [`NOTICE`](NOTICE).
+
 ---
 
 > **Dados fictícios. Versão sanitizada de um sistema em uso real; identificadores do cliente foram substituídos.**
