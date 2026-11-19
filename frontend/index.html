@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Repositório Jurídico · Programa</title>
+    <script>
+      // Aplica o tema antes da primeira pintura: sem flash na troca.
+      (function () {
+        try {
+          var stored = localStorage.getItem('prog-theme')
+          var dark = stored === 'dark' || (stored !== 'light' &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches)
+          document.documentElement.classList.toggle('dark', dark)
+          // Modo estatico: captura de tela, impressao ou preferencia do sistema.
+          var estatico =
+            /[?&]static=1/.test(location.search) ||
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          document.documentElement.classList.toggle('no-reveal', estatico)
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+  <body class="h-full">
+    <div id="root" class="h-full"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+# ==========================================================================
+# dashboard_juridico — .gitignore
+# Regra mestra: NENHUM documento jurídico e NENHUM dado derivado do acervo
+# entra no histórico. O Git guarda código, documentação e configuração.
+# ==========================================================================
+
+# --- Dados: fonte, derivados, cache, banco analítico -----------------------
+data/raw/**
+data/processed/**
+data/cache/**
+!data/**/.gitkeep
+!data/README.md
+
+# Nunca versionar documentos jurídicos, em lugar nenhum do repo
+*.pdf
+*.docx
+*.doc
+*.xlsx
+*.xlsm
+*.xls
+*.pptx
+*.msg
+*.eml
+!docs/**/*.md
+
+# Banco analítico e formatos intermediários (sempre reconstruíveis)
+*.duckdb
+*.duckdb.wal
+*.sqlite
+*.sqlite3
+*.db
+*.parquet
+*.arrow
+*.feather
+
+# --- Execução: logs, estado, saídas ---------------------------------------
+logs/**
+!logs/.gitkeep
+output/**
+!output/.gitkeep
+state/**
+!state/.gitkeep
+!state/README.md
+
+# --- Segredos e configuração local ----------------------------------------
+.env
+.env.*
+!.env.example
+config/config.json
+config/config.local.json
+config/*.local.json
+*.pem
+*.key
+*.pfx
+secrets/
+
+# --- Python ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# --- Node / frontend ------------------------------------------------------
+node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/coverage/
+.eslintcache
+*.tsbuildinfo
+
+# --- Sistema operacional e Office -----------------------------------------
+~$*
+*.~*
+.~lock.*
+*.tmp
+*.temp
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# --- Editores -------------------------------------------------------------
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# --- Claude Code (estado local da sessão) ---------------------------------
+.claude/settings.local.json
+
+# --- Agent skills instaladas de fora (Higgsfield) -------------------------
+# Artefatos locais do instalador `skills`, reinstaláveis a partir do manifesto.
+# NÃO ignorar o `.claude/` inteiro: as skills e comandos próprios do projeto
+# são versionados de propósito. Aqui só saem os diretórios de terceiros.
+.agents/
+.claude/skills/higgsfield-*
+
+# `skills-lock.json` fica FORA desta lista, de propósito: é o manifesto com o
+# hash de cada skill instalada, e é o que torna a instalação reprodutível.
+
+# --- Fonte ficticia gerada localmente (examples/gerar_fonte_ficticia.py) ----
+examples/fonte-ficticia/

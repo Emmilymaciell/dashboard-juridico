@@ -1,0 +1,47 @@
+[project]
+name = "dashboard-juridico"
+version = "0.1.0"
+description = "Legal Intelligence Dashboard do acervo jurídico do Escritório Jurídico (Programa / Fundo)"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+  "pydantic>=2.9",
+  "duckdb>=1.1",
+  "pyarrow>=17",
+  "pandas>=2.2",
+  "openpyxl>=3.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "httpx>=0.27", "ruff>=0.7"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q --strict-markers"
+filterwarnings = [
+  "ignore::DeprecationWarning:starlette.*",
+  "ignore:Using `httpx` with `starlette.testclient`:UserWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = ["frontend", "data", "output", "logs", "state", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "RUF"]
+ignore = [
+  "RUF001",  # caracteres unicode ambíguos: a documentação e as mensagens são em pt-BR
+  "RUF002",
+  "RUF003",
+  "N806",    # nomes de variáveis locais em pt-BR
+  "B008",    # Depends() em default de parâmetro é o padrão do FastAPI
+  "SIM108",
+  "UP046",   # Generic[T] em vez de PEP 695: mais compativel com pydantic v2
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["SLF001", "E501"]
+"scripts/*" = ["E501"]

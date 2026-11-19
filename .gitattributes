@@ -1,0 +1,49 @@
+# Normalização de fim de linha: repositório em LF, checkout nativo no Windows.
+* text=auto eol=lf
+
+# Scripts que precisam de CRLF no Windows
+*.ps1   text eol=crlf
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+
+# Scripts POSIX sempre LF
+*.sh    text eol=lf
+
+# Código e documentação
+*.py    text diff=python
+*.ts    text
+*.tsx   text
+*.js    text
+*.jsx   text
+*.json  text
+*.md    text diff=markdown
+*.css   text
+*.html  text diff=html
+*.yml   text
+*.yaml  text
+*.toml  text
+*.sql   text
+*.csv   text eol=lf
+
+# Binários — nunca fazer diff nem normalizar
+*.xlsx  binary
+*.xlsm  binary
+*.pdf   binary
+*.docx  binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.duckdb   binary
+*.parquet  binary
+*.sqlite   binary
+
+# Lockfiles: não poluir o diff no Git GUI
+package-lock.json  -diff linguist-generated
+pnpm-lock.yaml     -diff linguist-generated
+uv.lock            -diff linguist-generated

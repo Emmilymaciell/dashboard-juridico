@@ -1,0 +1,249 @@
+{
+  "_meta": {
+    "versao": 2,
+    "arquivo": "config/regras_negocio.json",
+    "proposito": "Regras de negocio do dominio, explicitas e auditaveis. NAO hardcodear nada disto em codigo de aplicacao: pipeline, API e frontend leem deste arquivo (ou das dimensoes geradas a partir dele).",
+    "confirmado_em": "2026-09-10",
+    "confirmado_por": "usuaria (Emmily Melo)",
+    "proveniencia_padrao": "confirmed_business_rule",
+    "historico": [
+      {"versao": 1, "data": "2026-09-10", "nota": "mapa de contratos, regra RD-102, Empreiteiras, macrogrupos, arquivos de controle, Parceiro, nao-acoplamento"},
+      {"versao": 2, "data": "2026-09-10", "nota": "Q7-Q10: estagio_documental, macrogrupo por tema, status_taxonomia, categorias vazias. Ver DEC-019 a DEC-023"}
+    ],
+    "nota": "Este arquivo E versionado (nao contem segredo nem dado pessoal). Alterar aqui exige registro em docs/DECISIONS.md."
+  },
+
+  "proveniencias": {
+    "_nota": "Vocabulario fechado de proveniencia. Todo campo derivado grava uma destas.",
+    "valores": [
+      {"chave": "source", "descricao": "valor literal da fonte"},
+      {"chave": "derived", "descricao": "calculo determinístico sobre a fonte"},
+      {"chave": "confirmed_business_rule", "descricao": "confirmado oficialmente pela usuaria, com data"},
+      {"chave": "inferred", "descricao": "extraido por regra/regex, confianca < 100%"},
+      {"chave": "taxonomy_pending", "descricao": "valor observado fora da taxonomia e sem regra; preservado como esta"},
+      {"chave": "missing", "descricao": "ausente na fonte; NULL explicito, nunca preenchido"}
+    ]
+  },
+
+  "contratos": {
+    "_proveniencia": "confirmed_business_rule",
+    "_confirmado_em": "2026-09-10",
+    "_nota": "Mapa contrato -> rodovia -> executora confirmado oficialmente pela usuaria. Deixa de ser INFERENCIA.",
+    "itens": [
+      {
+        "contrato": "11/2025", "numero": "11", "ano": 2025,
+        "rodovia": "RD-103", "executora": "Alfa",
+        "destinatario_indice": "Executora RD103 - Alfa",
+        "proveniencia": "confirmed_business_rule"
+      },
+      {
+        "contrato": "12/2025", "numero": "12", "ano": 2025,
+        "rodovia": "RD-102A", "executora": "BETA",
+        "destinatario_indice": "Executora RD102A - Beta",
+        "proveniencia": "confirmed_business_rule",
+        "_nota": "A usuaria confirmou a grafia 'BETA'. A coluna Destinatarios do indice usa 'Beta'. 'executora' e o nome canonico; 'destinatario_indice' e a chave de join com a fonte."
+      },
+      {
+        "contrato": "13/2025", "numero": "13", "ano": 2025,
+        "rodovia": "RD-101", "executora": "Gama",
+        "destinatario_indice": "Executora RD101 - Gama",
+        "proveniencia": "confirmed_business_rule"
+      },
+      {
+        "contrato": "14/2025", "numero": "14", "ano": 2025,
+        "rodovia": "RD-104", "executora": "DELTA",
+        "destinatario_indice": "Executora RD104 - Delta",
+        "proveniencia": "confirmed_business_rule"
+      }
+    ],
+    "nao_mapeados": [
+      {
+        "contrato": "10/2025",
+        "nota": "Contrato da estruturadora (Programa). Nao vinculado a rodovia. Sem confirmacao formal — tratar como derived.",
+        "proveniencia": "derived"
+      }
+    ]
+  },
+
+  "rodovias": {
+    "_proveniencia": "confirmed_business_rule",
+    "_confirmado_em": "2026-09-10",
+    "regra_rd102": {
+      "enunciado": "TODO 'RD-102' SEM INDICACAO EXPRESSA DE 'B' DEVE SER TRATADO COMO RD-102A. A presenca explicita de 'B' e o que determina RD-102B.",
+      "proveniencia": "confirmed_business_rule",
+      "ambigua": false,
+      "exemplos": {
+        "RD-102": "RD-102A", "RD 102": "RD-102A", "RD102": "RD-102A",
+        "RD-102A": "RD-102A", "RD 102 A": "RD-102A",
+        "RD-102B": "RD-102B", "RD 102 B": "RD-102B", "rd102b": "RD-102B"
+      }
+    },
+    "normalizacao": {
+      "regex": "(?<![A-Za-z])RD\\s*-?\\s*(\\d{3})\\s*([AB])?\\b",
+      "flags": "IGNORECASE",
+      "tolera": ["espaco", "hifen", "caixa", "ausencia de separador"],
+      "formato_canonico": "RD-<NNN>[A|B]",
+      "aplicar_por_campo": true,
+      "_por_que_por_campo": "Concatenar campos antes do regex gera FALSO POSITIVO: siglas de órgão estadual terminadas na UF (sintéticas na versão pública: 'MPRD' + '251104 - ...' produz 'RD 251'; 'SITC ALERD' + '260105' produz 'RD 260'; 'TCE-RD' + '250522' produz 'RD 250'). O regex roda em cada campo isoladamente, e o lookbehind (?<![A-Za-z]) barra o 'RD' final de MPRD/ALERD. Ver docs/DECISIONS.md DEC-014.",
+      "campos_origem": ["Destinatarios", "Assunto", "Arquivo"],
+      "confianca_por_campo": {"Destinatarios": "alta", "Assunto": "media", "Arquivo": "media"}
+    },
+    "canonicas_com_contrato": ["RD-101", "RD-102A", "RD-103", "RD-104"],
+    "canonicas_sem_contrato": ["RD-102B", "RD-106", "RD-105"],
+    "_nota_sem_contrato": "Aparecem em editais, minutas e declaracoes, sem contrato confirmado. Rodovia valida, sem vinculo contratual.",
+    "falsos_positivos_conhecidos": ["RD-250", "RD-251", "RD-260"],
+    "_nota_falsos_positivos": "Produzidos pelo regex antigo ao concatenar campos. Nao sao rodovias do acervo. Mantidos como guarda de regressao: se voltarem a aparecer, o regex regrediu."
+  },
+
+  "destinatarios": {
+    "validos_confirmados_fora_da_planilha": [
+      {
+        "valor": "Empreiteiras",
+        "proveniencia": "confirmed_business_rule",
+        "confirmado_em": "2026-09-10",
+        "nota": "Destinatario valido confirmado pela usuaria. Ainda NAO consta na aba LISTAS_APOIO. NAO e erro de classificacao. Este projeto nao altera o Excel."
+      }
+    ],
+    "buckets_genericos": ["Empreiteiras", "Executoras", "Outros"],
+    "_nota_buckets": "Valores validos, mas sem stakeholder identificavel. Limitam analise por stakeholder — declarar cobertura na UI.",
+    "exibir_sem_expansao": ["Parceiro", "Comissão Legislativa"],
+    "_nota_exibir": "Por decisao da usuaria, estas siglas NAO tem expansao inventada em nenhum lugar do produto."
+  },
+
+  "status_taxonomia": {
+    "_proveniencia": "confirmed_business_rule",
+    "_nota": "Valor de taxonomia divergente e ESTADO, nao erro (DEC-022). Preservar exatamente como esta na fonte; nunca reclassificar automaticamente; nunca bloquear a ingestao.",
+    "valores": [
+      {"chave": "ok", "descricao": "consta da LISTAS_APOIO", "severidade": null},
+      {"chave": "confirmado_por_regra", "descricao": "fora da planilha, valido por regra confirmada", "severidade": "info"},
+      {"chave": "pendente_de_validacao", "descricao": "fora da planilha e sem regra confirmada", "severidade": "low"}
+    ]
+  },
+
+  "estagio_documental": {
+    "_proveniencia": "derived",
+    "_status": "ACEITA (DEC-019)",
+    "_nota": "Estagio NAO e materia juridica. Minuta e forma/estagio, nao assunto. Classificacao conservadora: sem evidencia, 'nao_determinado'.",
+    "valores": [
+      {"chave": "em_elaboracao", "rotulo": "Em elaboração / Minuta"},
+      {"chave": "consolidado", "rotulo": "Consolidado"},
+      {"chave": "nao_determinado", "rotulo": "Não determinado"}
+    ],
+    "por_natureza": {
+      "Minuta": "em_elaboracao",
+      "Contrato / Instrumento": "consolidado",
+      "Edital": "consolidado",
+      "Errata": "consolidado",
+      "Advertência": "consolidado",
+      "Notificação": "consolidado",
+      "Seguro Garantia": "consolidado",
+      "Declaração": "consolidado",
+      "Relatório": "consolidado",
+      "Checklist / Formulário": "consolidado",
+      "Nota Técnica": "consolidado",
+      "Nota Explicativa": "consolidado",
+      "Consulta": "consolidado",
+      "Resposta a Consulta": "consolidado",
+      "Manifestação": "consolidado",
+      "Reunião / Ata": "consolidado",
+      "Ofício / Carta": "consolidado",
+      "Parecer": "consolidado",
+      "Estudo Técnico": "consolidado",
+      "Processo Administrativo": "consolidado",
+      "Termo de Referência": "consolidado",
+      "ESG / Compliance": "consolidado",
+      "Anexo": "nao_determinado",
+      "Apêndice": "nao_determinado",
+      "Outros": "nao_determinado"
+    },
+    "marcadores_no_nome_em_elaboracao": ["minuta", "revjuridico", "revisado", "com marcas", "marcas", "limpa", " rev "],
+    "_nota_marcadores": "Aplicados ao nome do arquivo em minusculas e sem acento, SOMENTE quando a natureza nao determinar o estagio."
+  },
+
+  "macrogrupos_juridicos": {
+    "_proveniencia": "derived",
+    "_status": "PROPOSTA — nao e KPI principal do MVP (DEC-019)",
+    "_nota": "Camada ANALITICA DERIVADA e configuravel. NAO e dado original do Escritório Jurídico. Onde a natureza nao carrega materia (Minuta, Anexo, Apendice, Oficio), a materia e derivada dos TEMAS, e somente quando o sinal e inequivoco. Sem sinal: 'Não classificado'.",
+    "valores": ["Contratual", "Conformidade", "Sancionatório", "Licitatório", "Consultivo", "Administrativo", "Não classificado"],
+    "default": {"macrogrupo": "Não classificado", "status": "revisar"},
+    "por_natureza": {
+      "Advertência":            {"macrogrupo": "Sancionatório", "status": "proposto"},
+      "Notificação":            {"macrogrupo": "Sancionatório", "status": "proposto"},
+      "Contrato / Instrumento": {"macrogrupo": "Contratual",    "status": "proposto"},
+      "Seguro Garantia":        {"macrogrupo": "Contratual",    "status": "proposto"},
+      "Edital":                 {"macrogrupo": "Licitatório",   "status": "proposto"},
+      "Errata":                 {"macrogrupo": "Licitatório",   "status": "proposto"},
+      "Termo de Referência":    {"macrogrupo": "Licitatório",   "status": "proposto"},
+      "Consulta":               {"macrogrupo": "Consultivo",    "status": "proposto"},
+      "Resposta a Consulta":    {"macrogrupo": "Consultivo",    "status": "proposto"},
+      "Parecer":                {"macrogrupo": "Consultivo",    "status": "proposto"},
+      "Nota Técnica":           {"macrogrupo": "Consultivo",    "status": "proposto"},
+      "Nota Explicativa":       {"macrogrupo": "Consultivo",    "status": "proposto"},
+      "Estudo Técnico":         {"macrogrupo": "Consultivo",    "status": "proposto"},
+      "Manifestação":           {"macrogrupo": "Consultivo",    "status": "proposto"},
+      "Checklist / Formulário": {"macrogrupo": "Conformidade",  "status": "proposto"},
+      "Relatório":              {"macrogrupo": "Conformidade",  "status": "proposto"},
+      "ESG / Compliance":       {"macrogrupo": "Conformidade",  "status": "proposto"},
+      "Declaração":             {"macrogrupo": "Administrativo","status": "proposto"},
+      "Reunião / Ata":          {"macrogrupo": "Administrativo","status": "proposto"},
+      "Processo Administrativo":{"macrogrupo": "Administrativo","status": "proposto"}
+    },
+    "naturezas_sem_materia": ["Minuta", "Anexo", "Apêndice", "Ofício / Carta", "Outros"],
+    "_nota_sem_materia": "Forma sem materia propria. Para estas, derivar do tema via 'por_tema'; sem sinal, 'Não classificado'.",
+    "por_tema": {
+      "_nota": "Usado SOMENTE para naturezas_sem_materia. Peso maior vence; empate resolve para 'Não classificado'.",
+      "Sanções / Advertência": {"macrogrupo": "Sancionatório", "peso": 3},
+      "Judicial / Contencioso": {"macrogrupo": "Sancionatório", "peso": 3},
+      "Eventograma":            {"macrogrupo": "Sancionatório", "peso": 2},
+      "Aditivo":                {"macrogrupo": "Contratual",    "peso": 3},
+      "Contrato":               {"macrogrupo": "Contratual",    "peso": 2},
+      "Seguro Garantia":        {"macrogrupo": "Contratual",    "peso": 3},
+      "Contratação":            {"macrogrupo": "Licitatório",   "peso": 3},
+      "Projeto":                {"macrogrupo": "Licitatório",   "peso": 1},
+      "ESG":                    {"macrogrupo": "Conformidade",  "peso": 3},
+      "Compliance":             {"macrogrupo": "Conformidade",  "peso": 3},
+      "Prestação de Contas":    {"macrogrupo": "Conformidade",  "peso": 3},
+      "Medição":               {"macrogrupo": "Conformidade",  "peso": 2},
+      "Cronograma":             {"macrogrupo": "Conformidade",  "peso": 1},
+      "Ministério Público":                   {"macrogrupo": "Consultivo",    "peso": 2},
+      "TCE":                    {"macrogrupo": "Consultivo",    "peso": 2},
+      "Governança":             {"macrogrupo": "Administrativo","peso": 2},
+      "Financeiro":             {"macrogrupo": "Administrativo","peso": 1},
+      "Ambiental":              {"macrogrupo": "Conformidade",  "peso": 1}
+    },
+    "temas_sem_sinal": ["Documentação", "Obra", "Outros"],
+    "_nota_temas_sem_sinal": "Genericos demais para determinar materia. Ignorados na derivacao."
+  },
+
+  "arquivos_controle_repositorio": {
+    "_proveniencia": "derived",
+    "_nota": "Artefatos de controle do repositorio, nao documentos juridicos do acervo. Nao entram na contagem do acervo e a ausencia deles no indice NAO e lacuna de indexacao.",
+    "padroes": ["^00 Indice\\.xlsx$", "^00 Nomenclatura.*\\.docx?$"],
+    "somente_na_raiz": true
+  },
+
+  "categorias_fisicas": {
+    "_proveniencia": "confirmed_business_rule",
+    "_nota": "Pasta de natureza existente e vazia NAO e problema de qualidade (DEC-022). Registrar como 'categoria existente, atualmente sem documentos', severidade info, e nunca como alerta executivo.",
+    "pasta_vazia_severidade": "info",
+    "pasta_vazia_rotulo": "categoria existente, atualmente sem documentos"
+  },
+
+  "reconciliacao": {
+    "_proveniencia": "confirmed_business_rule",
+    "_nota": "A fonte estruturada e o inventario fisico tem relogios diferentes (DEC-021). Documento que chegou depois da ultima varredura NAO e falha de qualidade.",
+    "campos_expostos": ["indexed_as_of", "physical_scan_as_of", "pending_reconciliation_count"],
+    "rotulos_ui": {
+      "indexed_as_of": "Dados estruturados atualizados em",
+      "physical_scan_as_of": "Inventário físico observado em"
+    },
+    "severidade_pendente": "info",
+    "severidade_lacuna": "high"
+  },
+
+  "acoplamento_projeto_vizinho": {
+    "_proveniencia": "confirmed_business_rule",
+    "permitido": false,
+    "nota": "Este dashboard NAO le a estrutura interna de repositorio_juridico (backups/, historico/, logs/). Fontes permitidas: 00 Indice.xlsx atual, aba LOG_ATUALIZACAO, inventario fisico somente leitura, e os snapshots que este projeto gera em data/raw/."
+  }
+}

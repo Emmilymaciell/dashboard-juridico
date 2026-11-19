@@ -1,0 +1,521 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   IDENTIDADE Programa — derivada das peças institucionais reais.
+   Ver docs/VISUAL_REDESIGN.md.
+
+   Cores de origem:
+     #1C5560  teal do logotipo Programa (Programa.svg)
+     #002738  navy petróleo dominante nos BIs institucionais
+     #2BC0E4  ciano de destaque dos gráficos Programa
+     #3C8394  teal médio
+     #005040  verde do Parceiro
+     #E8EEF2  claro institucional
+
+   Nada de azul React nem roxo SaaS. O ciano é a cor de ação; o petróleo é a base.
+   ========================================================================== */
+@layer base {
+  :root {
+    /* ---- claro: papel institucional, texto petróleo ---- */
+    --canvas: 200 24% 97%;
+    --surface: 0 0% 100%;
+    --elevated: 0 0% 100%;
+    --subtle: 200 26% 94%;
+    --line: 200 20% 88%;
+    --line-strong: 199 18% 78%;
+
+    --ink: 199 62% 13%; /* #0D2A36 — petróleo escuro */
+    --ink-muted: 198 20% 38%;
+    --ink-faint: 199 14% 56%;
+
+    --accent: 189 62% 34%; /* teal Programa mais saturado para contraste AA no claro */
+    --accent-soft: 188 60% 94%;
+    --accent-ink: 192 68% 26%;
+    --accent-contrast: 0 0% 100%;
+
+    --brand: 191 55% 24%; /* #1C5560 Programa */
+    --brand-deep: 199 88% 11%; /* #002738 */
+    --cyan: 189 76% 44%; /* #2BC0E4 rebaixado para o claro */
+
+    --positive: 162 66% 28%;
+    --warning: 32 84% 38%;
+    --danger: 358 66% 46%;
+    --info: 196 72% 34%;
+
+    --shadow: 199 45% 18%;
+
+    /* Paleta de dados: sequência petróleo -> ciano -> apoios institucionais.
+       Ordem fixa por posição no ranking, nunca por valor. */
+    /* Paleta categórica institucional. Ancorada no Programa (petróleo/ciano) e no
+       Parceiro (verde), com dois acentos quentes terrosos para contraste. Fora, de
+       propósito: azul genérico de framework e roxo de SaaS. A ordem é escolhida
+       para que vizinhos na barra de proporção não se confundam. */
+    --data-1: 189 66% 32%;   /* ciano Programa, escuro */
+    --data-2: 210 55% 38%;   /* azul petróleo */
+    --data-3: 166 55% 28%;   /* verde do Parceiro */
+    --data-4: 30 74% 40%;    /* âmbar */
+    --data-5: 228 30% 46%;   /* índigo ardósia */
+    --data-6: 10 56% 44%;    /* terracota */
+    --data-7: 150 34% 35%;   /* verde sálvia */
+    --data-8: 198 18% 44%;   /* aço */
+
+    --grad-from: 199 88% 11%;
+    --grad-to: 191 55% 24%;
+  }
+
+  .dark {
+    /* ---- escuro: o modo nativo da identidade Programa ---- */
+    --canvas: 200 86% 7%; /* #011825 */
+    --surface: 199 76% 11%; /* #04202E */
+    --elevated: 197 52% 15%; /* #12303B */
+    --subtle: 197 44% 17%; /* #183743 */
+    --line: 196 32% 22%;
+    --line-strong: 194 26% 33%;
+
+    --ink: 190 36% 95%;
+    --ink-muted: 195 20% 72%;
+    --ink-faint: 196 16% 52%;
+
+    --accent: 187 76% 55%; /* #2BC0E4 vivo */
+    --accent-soft: 195 60% 18%;
+    --accent-ink: 186 86% 70%;
+    --accent-contrast: 199 90% 9%;
+
+    --brand: 188 46% 48%;
+    --brand-deep: 199 88% 9%;
+    --cyan: 187 82% 58%;
+
+    --positive: 158 64% 48%;
+    --warning: 36 88% 60%;
+    --danger: 358 78% 64%;
+    --info: 193 78% 58%;
+
+    --shadow: 200 90% 3%;
+
+    --data-1: 189 76% 56%;   /* ciano Programa */
+    --data-2: 205 52% 48%;   /* azul petróleo */
+    --data-3: 168 52% 46%;   /* verde do Parceiro */
+    --data-4: 34 80% 60%;    /* âmbar */
+    --data-5: 228 34% 62%;   /* índigo ardósia */
+    --data-6: 12 62% 58%;    /* terracota */
+    --data-7: 152 36% 56%;   /* verde sálvia */
+    --data-8: 196 24% 70%;   /* aço claro */
+
+    --grad-from: 200 90% 6%;
+    --grad-to: 196 60% 13%;
+  }
+
+  * {
+    border-color: hsl(var(--line));
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: hsl(var(--canvas));
+    color: hsl(var(--ink));
+    font-family: Inter, ui-sans-serif, system-ui, 'Segoe UI', sans-serif;
+    font-size: 0.875rem;
+    font-feature-settings: 'cv05' 1, 'ss01' 1;
+  }
+
+  /* Números de KPI e tabela não podem "dançar" ao mudar de valor. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px hsl(var(--canvas)),
+      0 0 0 4px hsl(var(--accent) / 0.5);
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: hsl(var(--accent) / 0.25);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--line-strong));
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--ink-faint));
+    background-clip: content-box;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-line bg-surface shadow-card;
+  }
+
+  /**
+   * Página com vídeo de ambiente atrás.
+   *
+   * O cartão opaco tapa o vídeo e devolve a página ao fundo liso; o cartão
+   * transparente demais perde a leitura do número. Aqui ele fica em 82% com
+   * desfoque próprio: o ambiente atravessa, o texto continua sendo a coisa
+   * nítida da tela, e a borda ganha um fio a mais de luz para o cartão não
+   * se dissolver no vídeo.
+   *
+   * `backdrop-filter` custa caro em área grande, e por isso está preso a esta
+   * página em vez de entrar na classe `.card` global.
+   */
+  .com-ambiente .card {
+    background: hsl(var(--surface) / 0.82);
+    backdrop-filter: blur(9px) saturate(118%);
+    border-color: hsl(var(--line) / 0.9);
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 ease-swift hover:border-accent/35 hover:shadow-raised;
+  }
+
+  .label-caps {
+    @apply text-2xs font-semibold uppercase tracking-[0.09em] text-ink-muted;
+  }
+
+  .eyebrow {
+    @apply text-2xs font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+
+  /* Gradiente institucional: petróleo profundo -> teal. Um por tela, no máximo. */
+  .brand-gradient {
+    background-image: linear-gradient(
+      135deg,
+      hsl(var(--grad-from)) 0%,
+      hsl(var(--grad-to)) 55%,
+      hsl(var(--brand) / 0.9) 100%
+    );
+  }
+
+  /* Malha de linhas: grafismo institucional discreto, sem parecer wallpaper. */
+  .brand-mesh {
+    background-image:
+      linear-gradient(to right, hsl(var(--accent) / 0.055) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--accent) / 0.055) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .hairline-top {
+    @apply relative;
+  }
+  .hairline-top::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 2px;
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      hsl(var(--accent) / 0.75),
+      transparent
+    );
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden rounded-lg bg-subtle;
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(90deg, transparent, hsl(var(--line) / 0.6), transparent);
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Tabelas largas rolam DENTRO do container, nunca na página. */
+  .table-scroll {
+    @apply overflow-x-auto overscroll-x-contain;
+  }
+}
+
+/* ==========================================================================
+   Animações de entrada em CSS, de propósito.
+   O estado de repouso é VISÍVEL: se a animação não rodar — aba em segundo
+   plano, captura headless, prefers-reduced-motion — o conteúdo aparece do
+   mesmo jeito. Prender opacidade em JS já nos custou um rodapé invisível.
+   ========================================================================== */
+@layer utilities {
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes reveal-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes reveal-left {
+    from {
+      opacity: 0;
+      transform: translateX(-16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes reveal-scale-x {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /**
+   * Entrada escalonada de item de popover.
+   *
+   * Em CSS, e não em Motion, por um motivo concreto: animação de entrada em JS
+   * deixa o elemento preso em `initial` quando não roda — aba oculta, captura
+   * headless, `prefers-reduced-motion` — e metade dos metadados do card
+   * simplesmente não aparecia. Keyframe com `both` tem estado final garantido, e
+   * `html.no-reveal` o neutraliza por completo.
+   */
+  @keyframes pop-de-baixo {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes pop-de-cima {
+    from {
+      opacity: 0;
+      transform: translateY(-12px) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .pop-de-baixo {
+    animation: pop-de-baixo 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .pop-de-cima {
+    animation: pop-de-cima 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /*
+     Troca de período da Linha do Tempo.
+
+     É keyframe de ENTRADA em elemento remontado por `key`, não par
+     entrada/saída em `AnimatePresence`. O motivo é velho conhecido deste
+     projeto: animação de saída em JS depende de callback de fim de animação, e
+     em aba oculta o rAF é estrangulado — o elemento que deveria sair ficava
+     montado para sempre e a tela mostrava DOIS períodos ao mesmo tempo.
+     Sem saída não há o que travar: o React desmonta na hora e o novo entra.
+  */
+  @keyframes periodo-da-direita {
+    from {
+      opacity: 0;
+      transform: translateX(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes periodo-da-esquerda {
+    from {
+      opacity: 0;
+      transform: translateX(-14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes contagem-de-baixo {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .periodo-da-direita {
+    animation: periodo-da-direita 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .periodo-da-esquerda {
+    animation: periodo-da-esquerda 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .contagem-de-baixo {
+    animation: contagem-de-baixo 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .stagger-in {
+    animation: reveal-in 0.26s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .reveal-up {
+    animation: reveal-up 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  /* O gráfico da Linha do Tempo: a linha se desenha da esquerda para a
+     direita, e cada nó aparece quando ela chega nele.
+
+     Keyframe em CSS, e não animação em JS, pela razão de sempre neste
+     projeto: o estado de REPOUSO é o estado final (linha inteira, nó
+     visível). Se a animação não rodar — aba oculta, captura headless,
+     `html.no-reveal`, movimento reduzido — aparece tudo desenhado, em vez de
+     ficar preso invisível. */
+  @keyframes desenhar-linha {
+    from {
+      stroke-dashoffset: var(--traco);
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .linha-do-grafico {
+    stroke-dasharray: var(--traco);
+    animation: desenhar-linha 1000ms cubic-bezier(0.32, 0, 0.16, 1) both;
+  }
+  @keyframes surgir-no {
+    from {
+      opacity: 0;
+      transform: scale(0.35);
+    }
+    60% {
+      opacity: 1;
+      transform: scale(1.35);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .no-do-grafico {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: surgir-no 220ms ease-out both;
+  }
+  @keyframes revelar-veu {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .veu-do-grafico {
+    animation: revelar-veu 1000ms ease-out both;
+  }
+
+  /* Entrada da coluna da timeline: cascata curta da esquerda para a direita.
+     O repouso e o estado final; se a animacao nao rodar, a coluna aparece
+     inteira. */
+  @keyframes entrar-coluna {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.975);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  .coluna-entrando {
+    animation: entrar-coluna 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Texto pousado direto sobre o video, sem painel atras.
+     Uma sombra curta e escura basta para a letra nao se dissolver num quadro
+     claro do ambiente - e, ao contrario de um retangulo de vidro, ela nao
+     recorta nada: o video continua inteiro por tras. Herdada, para valer em
+     tudo que estiver dentro da faixa da timeline. */
+  .sobre-ambiente,
+  .sobre-ambiente * {
+    text-shadow:
+      0 1px 3px rgba(2, 7, 13, 0.72),
+      0 0 12px rgba(2, 7, 13, 0.4);
+  }
+  .reveal-in {
+    animation: reveal-in 0.42s ease-out both;
+  }
+  .reveal-left {
+    animation: reveal-left 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  /*
+     Modo estático: desliga as animações de entrada.
+     Ativado por `?static=1` (captura de tela, impressão, PDF) ou por
+     `prefers-reduced-motion`. Sem isto, uma captura feita no meio do delay
+     pega o conteúdo em opacidade zero.
+  */
+  html.no-reveal .pop-de-baixo,
+  html.no-reveal .pop-de-cima,
+  html.no-reveal .periodo-da-direita,
+  html.no-reveal .periodo-da-esquerda,
+  html.no-reveal .contagem-de-baixo,
+  html.no-reveal .stagger-in,
+  html.no-reveal .linha-do-grafico {
+    stroke-dasharray: none !important;
+  }
+  html.no-reveal .reveal-up,
+  html.no-reveal .reveal-in,
+  html.no-reveal .reveal-left,
+  html.no-reveal .coluna-entrando,
+  html.no-reveal .linha-do-grafico,
+  html.no-reveal .no-do-grafico,
+  html.no-reveal .veu-do-grafico,
+  html.no-reveal .reveal-scale-x {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .reveal-scale-x {
+    transform-origin: left;
+    animation: reveal-scale-x 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

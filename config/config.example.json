@@ -1,0 +1,32 @@
+{
+  "_comentario": "Copie para config/config.json e ajuste. config/config.json NAO vai para o Git. Variaveis de ambiente (.env) tem precedencia sobre este arquivo. Use barras normais (/) nos caminhos: Python resolve isso no Windows sem escape.",
+  "source": {
+    "root": "examples/fonte-ficticia",
+    "index_filename": "00 Indice.xlsx",
+    "index_sheets": {
+      "indice": "ÍNDICE",
+      "listas_apoio": "LISTAS_APOIO",
+      "nomenclatura": "NOMENCLATURA",
+      "log_atualizacao": "LOG_ATUALIZACAO"
+    },
+    "read_only": true,
+    "_read_only_nota": "Trava de seguranca. Nenhum codigo deste projeto abre a fonte em modo de escrita; qualquer tentativa deve falhar em tempo de execucao."
+  },
+  "derived": {
+    "raw": "data/raw",
+    "processed": "data/processed",
+    "cache": "data/cache",
+    "duckdb_path": "data/processed/prog.duckdb"
+  },
+  "normalizacao": {
+    "delimitador_multivalorado": ";",
+    "colunas_multivaloradas": ["Temas", "Destinatarios"],
+    "formato_datahora_texto": "%d/%m/%Y %H:%M",
+    "marcador_aproximado": "(aprox.)"
+  },
+  "taxonomia": {
+    "rodovias_conhecidas": ["RD-101", "RD-102A", "RD-102B", "RD-103", "RD-106", "RD-105", "RD-104"],
+    "regex_rodovia": "RD[\\s-]?(\\d{3}[AB]?)",
+    "regex_contrato": "Contrato\\s+(\\d{2})(?:\\s*/\\s*|\\s+)?(20\\d{2})?"
+  }
+}
