@@ -100,7 +100,6 @@ Medidos no sistema real; fonte entre parênteses. Na versão pública os dados s
 | Testes Python (pytest) | 115 passando · 1 falha · 20 erros conhecidos (fonte mudou e não foi reprocessada; todos em `test_pipeline_integracao.py`) | `STATE.md`, execução de 22/09/2026 |
 | Decisões de arquitetura/produto registradas | 34 (`DEC-001` … `DEC-034`) | `docs/DECISIONS.md` |
 | Endpoints da API | 24 rotas `GET` em `/api/v1` | `backend/app/api/v1/` |
-| Tempo economizado | [a confirmar pela autora] | — |
 
 Na versão pública, com o dataset fictício: 18 demandas (17 ativas, 1 excluída), 31 vínculos
 de tema, 7 documentos com rodovia, 6 com contrato e as 8 verificações de reconciliação OK.
@@ -141,6 +140,15 @@ O dataset fictício (`examples/demandas_ficticias.json`) tem o mesmo layout do �
 necessidade de resposta, log de varreduras e hyperlinks. Nenhuma demanda, processo,
 pessoa, rodovia ou contrato ali existe.
 
+## Limitações conhecidas
+
+- Uso **local e monousuário**: API em `127.0.0.1`, sem autenticação, multiusuário ou deploy em nuvem (fora de escopo em `docs/ROADMAP.md`).
+- Lê só o índice e o inventário de pastas: não abre o conteúdo de PDF/DOCX, não faz OCR nem NLP.
+- Rodovia e contrato são extraídos do texto por regras; documento sem rodovia identificável aparece como ausência, nunca como "Geral" (`DEC-026`). No último ciclo do sistema real, 182 de 397 documentos tinham rodovia identificada.
+- Os hyperlinks para os documentos originais não são validados por HTTP (exigiria autenticação no SharePoint).
+- Sem teste ponta a ponta de navegador; o bundle do frontend tem ~1,07 MB (343 KB gzip, a maior parte é ECharts) e ainda não tem code-splitting por página.
+- Se o layout da planilha-índice mudar, o pipeline aborta sem gravar nada (contrato estrutural `indice_v1`).
+
 ## O que eu decidi × o que a IA gerou
 
 O código foi escrito com **Claude Code** (e Codex) como ferramenta, sob revisão da autora
@@ -164,9 +172,7 @@ segue o que está registrado em `docs/DECISIONS.md`, `config/regras_negocio.json
 
 **Gerado com IA sob revisão da autora:** a implementação do pipeline, da API e do frontend;
 os testes; a redação dos registros de decisão e da documentação técnica; a análise que levou
-ao bug do regex por campo (`DEC-014`). Qual parte de cada decisão técnica de implementação
-(ex.: DuckDB `DEC-003`, snapshot por ciclo `DEC-020`, dois relógios `DEC-021`) partiu da
-autora ou foi proposta pela IA e aceita: [a confirmar pela autora].
+ao bug do regex por campo (`DEC-014`).
 
 ## Stack
 

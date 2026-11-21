@@ -248,19 +248,19 @@ confirmado ou achado a validar; categoria vazia é categoria vazia; documento re
 
 | Arquivo | Conteúdo |
 |---|---|
-| [`CLAUDE.md`](CLAUDE.md) | memória permanente: objetivo, arquitetura, regras, restrições, Git |
-| [`STATE.md`](STATE.md) | fase atual, o que está feito, próximo passo, pendências |
-| [`config/regras_negocio.json`](config/regras_negocio.json) | **regras confirmadas pela usuária** — autoridade operacional |
-| [`docs/DISCOVERY.md`](docs/DISCOVERY.md) (removido na versão pública: perfil do acervo real) | o que os dados reais são — números medidos |
-| [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md) | modelo analítico: fatos, dimensões, pontes, linhagem |
-| [`docs/PRODUCT_SPEC.md`](docs/PRODUCT_SPEC.md) | páginas, KPIs, e o que os dados sustentam ou não |
-| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | arquitetura técnica e contratos entre camadas |
-| [`docs/UI_UX.md`](docs/UI_UX.md) | design system, tokens, temas, padrões de interação |
-| [`docs/VISUAL_REDESIGN.md`](docs/VISUAL_REDESIGN.md) | redesenho V2: referências, paleta, armadilhas dos ativos |
-| [`docs/ROADMAP.md`](docs/ROADMAP.md) | fases 0 a 8 |
-| [`docs/DECISIONS.md`](docs/DECISIONS.md) | 30 decisões registradas (DEC-001…DEC-030) |
-| [`docs/GLOSSARIO.md`](docs/GLOSSARIO.md) | siglas do domínio: Programa, Fundo, Parceiro, Órgão Contratante, Ministério Público, executoras |
-| [`tests/README.md`](tests/README.md) | o que cada suíte cobre e por quê |
+| [`CLAUDE.md`](../CLAUDE.md) | memória permanente: objetivo, arquitetura, regras, restrições, Git |
+| [`STATE.md`](../STATE.md) | fase atual, o que está feito, próximo passo, pendências |
+| [`config/regras_negocio.json`](../config/regras_negocio.json) | **regras confirmadas pela usuária** — autoridade operacional |
+| `docs/DISCOVERY.md` *(não incluído na versão pública)* (removido na versão pública: perfil do acervo real) | o que os dados reais são — números medidos |
+| [`docs/DATA_MODEL.md`](../docs/DATA_MODEL.md) | modelo analítico: fatos, dimensões, pontes, linhagem |
+| [`docs/PRODUCT_SPEC.md`](../docs/PRODUCT_SPEC.md) | páginas, KPIs, e o que os dados sustentam ou não |
+| [`docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md) | arquitetura técnica e contratos entre camadas |
+| [`docs/UI_UX.md`](../docs/UI_UX.md) | design system, tokens, temas, padrões de interação |
+| [`docs/VISUAL_REDESIGN.md`](../docs/VISUAL_REDESIGN.md) | redesenho V2: referências, paleta, armadilhas dos ativos |
+| [`docs/ROADMAP.md`](../docs/ROADMAP.md) | fases 0 a 8 |
+| [`docs/DECISIONS.md`](../docs/DECISIONS.md) | 30 decisões registradas (DEC-001…DEC-030) |
+| [`docs/GLOSSARIO.md`](../docs/GLOSSARIO.md) | siglas do domínio: Programa, Fundo, Parceiro, Órgão Contratante, Ministério Público, executoras |
+| [`tests/README.md`](../tests/README.md) | o que cada suíte cobre e por quê |
 
 ---
 
